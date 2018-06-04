@@ -31,6 +31,13 @@
 `docker rmi`    
 удалить образ
 
+`docker rmi $(docker images | grep '^<none>' | awk '{print $3}')`  
+Или  
+`docker rmi $(docker images -f "dangling=true" -q)`  
+Удалить все образы, не помеченные тегами
+
+
+
 `docker pull ubuntu:15.04`  
 стянуть образ убунты
 
@@ -92,4 +99,16 @@ Example: `docker run -d --name port-export -p 8085:80 parseq/stepik-ports-docker
 `docker network create custom`  
 `docker inspect network custom | more`  
 `docker run -it --rm --name one --network=custom ubuntu:14.04`
+
+
+В Dockerfile избегайте команд  `apt-get upgrade` и  `apt-get dist-upgrade`, оптимальный синтаксис команды для установки пакетов выглядит так:
+
+```
+RUN apt-get update && apt-get install -y \
+    bzr \
+    cvs \  
+    git \
+    mercurial \
+    subversion
+```
 
